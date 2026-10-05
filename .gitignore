@@ -1,0 +1,18 @@
+# Python virtual environment
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
+
+# VS Code local settings
+.vscode/
+
+# Sealed generator truth - keep hidden until Week 4
+data/sealed/
+
+# Generated synthetic datasets
+data/raw/*.csv
