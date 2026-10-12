@@ -11,8 +11,20 @@ __pycache__/
 # VS Code local settings
 .vscode/
 
-# Sealed generator truth - keep hidden until Week 4
+# Sealed generator truth - DO NOT OPEN before Week 4
 data/sealed/
 
 # Generated synthetic datasets
 data/raw/*.csv
+data/clean/*.csv
+data/processed/*.csv
+
+# Large intermediate EDA data
+reports/W02/prefault_robot_day_features.csv
+
+# Cleaned and intermediate generated datasets
+data/clean/*.csv
+data/processed/*.csv
+
+# Large intermediate EDA data
+reports/W02/prefault_robot_day_features.csv
