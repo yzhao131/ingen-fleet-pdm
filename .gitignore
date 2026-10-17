@@ -28,3 +28,6 @@ data/processed/*.csv
 
 # Large intermediate EDA data
 reports/W02/prefault_robot_day_features.csv
+
+# Causal generator preview data
+/data/causal_preview/
