@@ -7,8 +7,9 @@ import pandas as pd
 # ==========================================
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-RAW_DIR = BASE_DIR / "data" / "raw"
-CLEAN_DIR = BASE_DIR / "data" / "clean"
+
+RAW_DIR = BASE_DIR / "data" / "causal_preview" / "raw"
+CLEAN_DIR = BASE_DIR / "data" / "causal_preview" / "clean"
 
 CLEAN_DIR.mkdir(parents=True, exist_ok=True)
 

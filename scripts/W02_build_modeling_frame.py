@@ -4,9 +4,8 @@ import numpy as np
 import pandas as pd
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-CLEAN_DIR = BASE_DIR / "data" / "clean"
-OUTPUT_DIR = BASE_DIR / "data" / "processed"
-
+CLEAN_DIR = BASE_DIR / "data" / "causal_preview" / "clean"
+OUTPUT_DIR = BASE_DIR / "data" / "causal_preview" / "processed"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 robots = pd.read_csv(CLEAN_DIR / "robots.csv")
