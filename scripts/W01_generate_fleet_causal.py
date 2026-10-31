@@ -260,6 +260,7 @@ def generate_telemetry(robots, missions):
 # Mission generation
 # --------------------------------------------------
 
+
 def generate_missions(robots):
     mission_records = []
     mission_counter = 1
@@ -280,32 +281,51 @@ def generate_missions(robots):
             if rng.random() < 0.15:
                 continue
 
-            # An active robot performs 1-3 missions that day.
-            n_missions = rng.integers(1, 4)
+            # An active robot performs up to 1-3 missions.
+            n_missions = int(rng.integers(1, 4))
+
+            # Missions must not overlap for the same robot.
+            next_available = date + pd.Timedelta(hours=6)
+            latest_end = date + pd.Timedelta(hours=21)
 
             for _ in range(n_missions):
+                duration_hours = float(rng.uniform(0.5, 4.0))
+                duration = pd.Timedelta(hours=duration_hours)
+
+                latest_start = min(
+                    date + pd.Timedelta(hours=17),
+                    latest_end - duration
+                )
+
+                if next_available > latest_start:
+                    break
+
+                earliest_hour = max(
+                    6,
+                    int(np.ceil(
+                        (next_available - date).total_seconds() / 3600
+                    ))
+                )
+
+                latest_hour = min(
+                    17,
+                    int(np.floor(
+                        (latest_start - date).total_seconds() / 3600
+                    ))
+                )
+
+                if earliest_hour > latest_hour:
+                    break
+
                 start_hour = int(
-                    rng.integers(6, 18)
+                    rng.integers(earliest_hour, latest_hour + 1)
                 )
 
-                duration_hours = rng.uniform(
-                    0.5,
-                    4.0
-                )
-
-                start_time = (
-                    date
-                    + pd.Timedelta(hours=start_hour)
-                )
-
-                end_time = (
-                    start_time
-                    + pd.Timedelta(hours=duration_hours)
-                )
+                start_time = date + pd.Timedelta(hours=start_hour)
+                end_time = start_time + duration
 
                 distance_km = (
-                    duration_hours
-                    * rng.uniform(2.0, 6.0)
+                    duration_hours * rng.uniform(2.0, 6.0)
                 )
 
                 mission_records.append({
@@ -319,9 +339,9 @@ def generate_missions(robots):
 
                 mission_counter += 1
 
-    missions = pd.DataFrame(mission_records)
+                next_available = end_time
 
-    return missions
+    return pd.DataFrame(mission_records)
 
  # --------------------------------------------------
 # Fault generation
@@ -808,8 +828,72 @@ def simulate_causal_fleet(robots, missions):
 
         for timestamp in timestamps:
             # Apply repairs only after they finish, never retrospectively.
+            
+            # Process mission completions and repair completions
+            # in chronological order within each telemetry interval.
+            events = []
+
+            while (
+                next_mission < len(mission_ends)
+                and mission_ends[next_mission].end_time <= timestamp
+            ):
+                mission = mission_ends[next_mission]
+                events.append((
+                    mission.end_time,
+                    0,
+                    "mission",
+                    mission
+                ))
+                next_mission += 1
+
             for repair in repairs:
                 if not repair["applied"] and repair["end"] <= timestamp:
+                    events.append((
+                        repair["end"],
+                        1,
+                        "repair",
+                        repair
+                    ))
+
+            # For equal timestamps, process mission before repair.
+            events.sort(key=lambda event: (event[0], event[1]))
+
+            assert all(
+                events[i][0] <= events[i + 1][0]
+                for i in range(len(events) - 1)
+            ), "Events are not in chronological order"
+
+            for event_time, _, event_type, event in events:
+
+                if event_type == "mission":
+                    mission = event
+
+                    overlaps_repair = any(
+                        mission.start_time < end
+                        and mission.end_time > start
+                        for start, end in active_intervals
+                    )
+
+                    if overlaps_repair:
+                        mission_status[mission.mission_id] = (
+                            "cancelled_maintenance"
+                        )
+                    else:
+                        mission_status[mission.mission_id] = "completed"
+
+                        hours = float(mission.operating_hours)
+                        operating_hours += hours
+                        battery_wear += 0.018 * hours / 4.0
+                        wheel_wear += (
+                            0.008 * terrain_factor * hours
+                        )
+                        bearing_wear += (
+                            0.00035 * terrain_factor * hours
+                        )
+
+                elif event_type == "repair":
+                    repair = event
+
                     if repair["reason"] == "battery":
                         battery_wear *= 0.20
                     elif repair["reason"] == "wheel":
@@ -820,29 +904,9 @@ def simulate_causal_fleet(robots, missions):
                         battery_wear *= 0.90
                         wheel_wear *= 0.90
                         bearing_wear *= 0.90
+
                     repair["applied"] = True
 
-            # Only completed missions contribute usage. Exclude missions
-            # overlapping known maintenance downtime.
-            while next_mission < len(mission_ends) and mission_ends[next_mission].end_time <= timestamp:
-                mission = mission_ends[next_mission]
-                overlaps_repair = any(
-                    mission.start_time < end and mission.end_time > start
-                    for start, end in active_intervals
-                )
-
-                if overlaps_repair:
-                    mission_status[mission.mission_id] = "cancelled_maintenance"
-                else:
-                    mission_status[mission.mission_id] = "completed"
-
-                    hours = float(mission.operating_hours)
-                    operating_hours += hours
-                    battery_wear += 0.018 * hours / 4.0
-                    wheel_wear += 0.008 * terrain_factor * hours
-                    bearing_wear += 0.00035 * terrain_factor * hours
-
-                next_mission += 1
 
             # Once per day, sample faults using state known before that day.
             # No future telemetry or fault-conditioned precursor injection.
