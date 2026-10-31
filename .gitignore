@@ -11,7 +11,7 @@ __pycache__/
 # VS Code local settings
 .vscode/
 
-# Sealed generator truth - DO NOT OPEN before Week 4
+# Sealed generator truth
 data/sealed/
 
 # Generated synthetic datasets
@@ -22,12 +22,6 @@ data/processed/*.csv
 # Large intermediate EDA data
 reports/W02/prefault_robot_day_features.csv
 
-# Cleaned and intermediate generated datasets
-data/clean/*.csv
-data/processed/*.csv
-
-# Large intermediate EDA data
-reports/W02/prefault_robot_day_features.csv
-
-# Causal generator preview data
+# Causal generator datasets
 /data/causal_preview/
+/data/causal_fixed/
