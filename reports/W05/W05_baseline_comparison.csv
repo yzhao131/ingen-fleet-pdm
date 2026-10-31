@@ -1,0 +1,4 @@
+model,MAE,Forecasts
+Last Value,1.0238095238095237,84
+Moving Average (4),1.4523809523809523,84
+Seasonal Naive (4),1.6547619047619047,84

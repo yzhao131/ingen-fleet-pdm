@@ -1,0 +1,4 @@
+model,MAE,Predictions
+Per-Unit Linear,0.410686050113568,21848
+Per-Unit Exponential,0.4152393787522463,21848
+Pooled Linear,0.42993435499373883,21848
