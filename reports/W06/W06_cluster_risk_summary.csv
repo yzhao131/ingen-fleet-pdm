@@ -1,0 +1,4 @@
+cluster,robot_count,total_faults,total_maintenance,total_operating_hours,mean_robot_fault_rate,mean_battery_capacity,mean_wheel_wear,pooled_faults_per_1000_hours
+0,10,55,36.0,16820.974,3.274,96.814,15.904,3.27
+1,20,92,38.0,34573.588,2.664,92.01,14.635,2.661
+2,20,96,57.0,33160.829,2.889,92.676,10.569,2.895

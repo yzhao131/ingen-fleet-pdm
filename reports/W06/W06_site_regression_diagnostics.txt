@@ -1,0 +1,28 @@
+Robots: 50
+Sites: 7
+Pearson dispersion: 0.5583
+
+                 Generalized Linear Model Regression Results                  
+==============================================================================
+Dep. Variable:            fault_count   No. Observations:                   50
+Model:                            GLM   Df Residuals:                       41
+Model Family:                 Poisson   Df Model:                            8
+Link Function:                    Log   Scale:                          1.0000
+Method:                          IRLS   Log-Likelihood:                -96.440
+Date:                Sat, 07 Nov 2026   Deviance:                       23.480
+Time:                        19:37:31   Pearson chi2:                     22.9
+No. Iterations:                     4   Pseudo R-squ. (CS):             0.1840
+Covariance Type:                  HC0                                         
+=========================================================================================
+                            coef    std err          z      P>|z|      [0.025      0.975]
+-----------------------------------------------------------------------------------------
+Intercept                -6.0206      0.176    -34.138      0.000      -6.366      -5.675
+C(site_id)[T.SITE_02]    -0.0985      0.153     -0.643      0.520      -0.398       0.201
+C(site_id)[T.SITE_03]     0.3768      0.300      1.256      0.209      -0.211       0.965
+C(site_id)[T.SITE_04]     0.1166      0.196      0.594      0.552      -0.268       0.501
+C(site_id)[T.SITE_05]    -0.1478      0.209     -0.709      0.478      -0.557       0.261
+C(site_id)[T.SITE_06]     0.3042      0.209      1.459      0.145      -0.105       0.713
+C(site_id)[T.SITE_07]     0.4322      0.217      1.992      0.046       0.007       0.857
+avg_mission_hours_z       0.0193      0.051      0.378      0.705      -0.080       0.119
+avg_motor_current_z      -0.1748      0.062     -2.836      0.005      -0.296      -0.054
+=========================================================================================
