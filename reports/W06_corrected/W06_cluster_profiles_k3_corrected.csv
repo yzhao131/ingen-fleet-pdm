@@ -1,0 +1,4 @@
+cluster,robot_count,avg_mission_hours,distance_per_operating_hour,avg_battery_capacity,avg_motor_current,avg_temperature,latest_battery_capacity,charge_cycles_per_100_hours,latest_wheel_wear,total_operating_hours,fault_count,faults_per_1000_hours
+0,21,2.254,3.989,97.508,4.513,21.501,95.006,24.953,11.394,1098.532,2.429,2.286
+1,26,2.294,3.997,99.053,4.191,25.2,98.263,24.811,4.368,397.77,1.346,4.907
+2,3,1.923,4.07,99.712,4.022,21.378,99.101,23.703,0.627,61.269,1.0,20.813

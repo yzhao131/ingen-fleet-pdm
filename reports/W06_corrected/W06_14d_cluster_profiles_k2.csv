@@ -1,0 +1,3 @@
+cluster_k2,avg_mission_hours,distance_per_operating_hour,avg_battery_capacity,avg_motor_current,avg_temperature,latest_battery_capacity,charge_cycles_per_100_hours,latest_wheel_wear
+0,2.232,3.941,99.758,3.994,21.046,99.774,23.087,0.644
+1,2.357,4.066,99.745,4.042,21.617,99.61,23.423,0.421
