@@ -1,0 +1,11 @@
+{
+  "model_version": "w07_rf_platt_v1",
+  "feature_version": "W03_v1",
+  "model": "RandomForest + Platt",
+  "validation_rows": 5612,
+  "validation_positives": 230,
+  "validation_ap": 0.04669352071282923,
+  "validation_brier": 0.0393031200927919,
+  "max_week4_prediction_difference": 9.71445146547012e-17,
+  "sklearn_version": "1.9.1"
+}

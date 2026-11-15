@@ -1,0 +1,3 @@
+unit_id,status,status_time,scheduled_service_date,inspection_result,risk_at_inspection
+R009,scheduled_service,2026-03-07T10:00:00Z,2026-03-09T10:00:00Z,,
+R049,inspection_completed,2026-03-06T10:00:00Z,,no_finding,0.045
